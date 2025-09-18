@@ -5,7 +5,6 @@
 // I know it will have problems with time. TLE
 int main (void)
 {
-    int i;
     int n;  // Amount of players
     int k;  // Initial points
     int q;  // Number of questions
@@ -13,25 +12,19 @@ int main (void)
 
     scanf("%i %i %i", &n, &k, &q);
 
-    std::vector<int> winners;
-    std::vector<int> players;
+    std::vector<int> players(n);
+    players.assign (n, k);
     
-    std::fill_n(players, n, 0);
-
-    for (i = 0; i < q; i++)
+    // Analyze all the inputs first
+    
+    for (int i = 0; i < q; i++)
     {
-        scanf("%i", &winners[i]);
+        scanf("%i", &w);
+        std::for_each(players.begin(), players.end(), [](int& n){ n -= 1; });
+        players[w - 1] += 1;
     }
 
-    for (i = 0; i < q; i++)
-    {
-        if (std::count(winners.begin(), winners.end(), winners[i]) < k - q)
-        {
-            players[winners[i]] = 0;
-        }
-    }
-
-    for (i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
         if(players[i] <= 0)
         {
@@ -42,5 +35,4 @@ int main (void)
             printf("Yes\n");
         }
     }
-
 }
