@@ -3,69 +3,71 @@
 
 int main (void)
 {
-    unsigned int i;     // Loop iterator
-    unsigned int t;     // Amount of test cases
-    unsigned int n;     // Amount of fields
+    unsigned int i;             // Loop iterator
+    unsigned int t;             // Amount of test cases
+    unsigned int n;             // Amount of fields
+    unsigned int entry;         // Input of how many dandelions in one field
     unsigned int accumulator;   // Amount of dandelions harvesteds
     bool lawn = 0;
 
-    std::cin >> t;
+    std::cin >> t;              // Gets the amount of test cases
     
     // Running while test cases
     while(t--)
     {
-        std::cin >> n;
+        std::cin >> n;                               // Gets the amount of fields
 
-        std::vector<unsigned int> a(n);     // Original input vector
-        std::vector<unsigned int> evens(n); // Evens inside original vector
-        std::vector<unsigned int> odds (n); // Odds inside original vector
-        std::vector<unsigned int> sorted_a (n);
+        std::list<unsigned int> evens;               // Evens inside inputs
+        std::list<unsigned int> odds;                // Odds inside inputs
+        std::vector<unsigned int> big_odds;          // Big Odds inside inputs
+        std::vector<unsigned int> little_odds;       // Little Odds inside inputs
 
-        for (i = 0; i < n; i++)     // Gets amount of dandelions per field
+        std::list<unsigned int> sorted_a;            // Will have the a vector in optimal order
+        std::list<unsigned int>::iterator it;
+        unsigned int small_odd = UINT_MAX;           // Smaller odd number of the dandelions inputs 
+
+        
+        // Gets amount of dandelions per field and sorts it in evens an odds
+        for (i = 0; i < n; i++)                     
         {
-            std::cin >> a[i];        
-        }
-
-        for (i = 0; i < n; i++)      // Sorts Evens and Odds
-        {
-            if (a[i] % 2 == 0)
+            std::cin >> entry;
+            if(entry % 2 == 0)
             {
-                evens.push_back(a[i]);
+                evens.push_back(entry);
             }
             else
             {
-                odds.push_back(a[i]);
-            }   
-        }
-
-        sorted_a[0] = odds[0];
-        odds.erase(odds.begin());
-
-        for (i = 0; i < sizeof(evens); i++)
-        {
-            sorted_a.push_back(evens[i]);
-        }
-        for (i = 0; i < sizeof(odds); i++)
-        {
-            sorted_a.push_back(odds[i]);
-        }
-
-        for (i = 0; i < n; i++)
-        {
-            if (sorted_a[i] % 2 != 0 && lawn == 0)
-            {
-                lawn = 1;
-            }
-            else if (sorted_a[i] % 2 != 0 && lawn == 1)
-            {
-                lawn = 0;
-            }
-            
-            if(lawn == 1)
-            {
-                accumulator += sorted_a[i];
+                if(entry < small_odd)
+                {
+                    small_odd = entry;
+                }
+                odds.push_back(entry);
             }
         }
-        std::cout << accumulator << std::endl;
+        
+        // If he nevers can turn on his lawnmower
+        if(odds.empty())
+        {
+            std::cout << accumulator << "\n";
+            continue;
+        }
+        
+        sorted_a.push_back(small_odd);
+
+        //[3, 6, 2, 1]
+        if(n % 2 == 0)
+        {
+
+
+        }
+        //[5, 9, 2]
+        else
+        {
+
+
+        }
+        sorted_a.push_back
+
+
     }
 }
