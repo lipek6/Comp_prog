@@ -13,7 +13,4 @@ int main (void)
     }
 
     std::cout << s.size();
-
-
-
 }
