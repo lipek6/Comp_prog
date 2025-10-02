@@ -11,39 +11,50 @@ int main(void)
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
 
-    long long n;              // Number of boxes
-    long long ai;             // Current box
+    int n;
+    int ai;
+    int last_top;
+    std::priority_queue<int, std::vector<int>, std::greater<int>> a;
+    std::queue<int> queue_equals;
     std::cin >> n;
-    long long visibles = n;   // Amout of visible boxes
+    int visibles = n;
     
-    std::priority_queue<long long, std::vector<long long>, std::greater<long long>> a;
+
 
     while(n--)
     {
         std::cin >> ai;
         a.push(ai);
     }
-
-    int last_top;
     
-    while(a.size() > 1)
+    while(a.size() != 1)
     {
         last_top = a.top();
         a.pop();
-
-        if(a.top() > last_top)
+    
+        if(last_top < a.top())
         {
             visibles--;
         }
+    
+        else if(last_top == a.top())
+        {
+            queue_equals.push(last_top);
+            if (!queue_equals.empty())
+            {
+                if (queue_equals.front() < a.top())
+                {
+                    queue_equals.pop();
+                    visibles--;
+                }
+            }
+        }
+    
         else
         {
-            if (a.top() == last_top)
-            {
-                visibles--;
-                continue;   
-            }
             break;
         }
     }
+
     std::cout << visibles << "\n";
 }

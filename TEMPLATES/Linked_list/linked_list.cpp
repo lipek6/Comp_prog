@@ -1,15 +1,61 @@
-    #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 
-    struct node
-    {
-        int val;
-        struct node *next;
+struct node
+{
+    int val;
+    struct node *next;
 
 };
 
-
+int listSize (node *head)
+{
+    node *cur = head;
+    size_t i = 0;
+    while(cur->next != nullptr)
+    {
+        i++;
+        cur = cur->next;
+    }
+    return i;
+}
 
 int listAt(node *head, size_t pos)
+{
+    if (pos >= listSize(head))
+    {
+        printf("ERROR, OUT OF RANGE\n");
+        return -1;
+    }
+    node *cur = head;
+    size_t i = 0;
+    while(i < pos && cur->next != nullptr)
+    {
+        cur = cur->next;
+        i++;
+    }
+    return cur->next->val;
+}
+
+int listFind(node *head, int value)
+{
+    node *cur = head;
+    size_t i = 0;
+    
+    while(cur->next != nullptr)
+    {
+        if (cur->next->val == value)
+        {
+            return i;
+        }
+        cur = cur->next;
+        i++;
+    }
+
+    return -1;
+}
+
+
+void listInsert(node *head, size_t pos, int value)
 {
     node *cur = head;
     size_t i = 0;
@@ -18,39 +64,32 @@ int listAt(node *head, size_t pos)
         cur = cur->next;
         i++;
     }
-    return cur->val;
+    node *new_node = new node;
+    new_node->val  = value;
+    new_node->next = cur->next;
+    cur->next = new_node; 
 }
 
-
-
-    int main (void)
+node *listNew()
+{
+    node *head = new node;
+    head->next = nullptr;
+    return head;
+}
+int main (void)
+{
+    
+    node *HEAD = listNew();
+    for (int v = 0; v < 100; v+= 10)
     {
-        node HEAD;
-        node *CURRENT;
-        node first;
-        node second;
-        node third;
-        node fourth;
-        node fifth;
-
-        HEAD.next     = &first;
-        CURRENT       = &HEAD;
-
-        first.next  = &second;
-        second.next = &third;
-        third.next  = &fourth;
-        fourth.next = &fifth;
-        fifth.next  = nullptr;
-
-        first.val  = 5;
-        second.val = 10;
-        third.val  = 15;
-        fourth.val = 20;
-        fifth.val  = 25;
-
-        while(CURRENT->next != nullptr)
-        {
-            CURRENT = CURRENT->next;
-            printf("%i\n", CURRENT->val);
-        }
+        listInsert(HEAD, v/10, v);
     }
+    
+    node *CURRENT = HEAD;
+    
+    while(CURRENT->next != nullptr)
+    {
+        printf("%i\n", CURRENT->next->val);
+        CURRENT = CURRENT->next;
+    }
+}
