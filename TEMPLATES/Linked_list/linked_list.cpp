@@ -5,7 +5,23 @@
         int val;
         struct node *next;
 
-    };
+};
+
+
+
+int listAt(node *head, size_t pos)
+{
+    node *cur = head;
+    size_t i = 0;
+    while(i < pos && cur->next != nullptr)
+    {
+        cur = cur->next;
+        i++;
+    }
+    return cur->val;
+}
+
+
 
     int main (void)
     {
