@@ -22,8 +22,13 @@ int main (void)
             x[i].push(x_input[i+j]);
         }
     }
-    for (auto it : x)
+
+    for (auto it = x.begin(); it != x.end(); it++)
     {
-        std::cout << it.top() << " ";
+        if(!it->empty())
+        {
+            std::cout << it->top() << " ";
+        }
     }
+    std::cout << "\n";
 }
