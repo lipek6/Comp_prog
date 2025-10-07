@@ -1,9 +1,9 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 
 struct disjoint_set
 {
     int sets_amount;            // Current amount of sets
-    int biggest_size;            // Size of the biggest set
+    int biggest_size;           // Size of the biggest set
     std::vector<int> s;         // Sizes
     std::vector<int> p;         // Parents
 
@@ -84,27 +84,31 @@ struct disjoint_set
     }
 };
 
-int main (void)
+int main(void)
 {
-    // A component is a group of cities where there is a route between any two cities using the roads == disjoint set union
-    // Find the number of components and the size of the largest component
-
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
 
-    int n, m, a, b;                 // Number of cities, number of roads, cities to connect by a road (a, b)
+    disjoint_set dsu;
+    int n, m, x, y;       // Chemicals and pairs and to put (x, y)
+    std::vector<std::pair<int, int>> pairs;
+    int danger = 1;
     std::cin >> n >> m;
 
-    disjoint_set dsu;
-
-    dsu.init(n); 
-    for (int i = 0; i < m; i++)
+    dsu.init(n);
+    while(m--)
     {
-        std::cin >> a >> b;         // We will construct a road between these two cities
-        dsu.union_find(a, b);
-        // Print number of sets and size of the largest set
-        int amount = dsu.count();
-        int largest = dsu.biggest();
-        std::cout << amount << " " << largest << std::endl;
+        std::cin >> x >> y;
+        pairs.push_back({x, y});
+        dsu.union_find(x, y);
     }
+
+    for (int i = 0; i < dsu.size(dsu.biggest()) - 1; i++)
+    {   
+        if(dsu.get(pairs[i].first) == dsu.get(pairs[i].second))
+        {
+            danger *= 2; 
+        }
+    }
+    std::cout << danger << std::endl;
 }

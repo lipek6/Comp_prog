@@ -3,7 +3,7 @@
 struct segtree
 {
     int size;
-    std::vector<long long> sums;
+    std::vector<int> mins;
 
     void init(int n)
     {
@@ -12,7 +12,7 @@ struct segtree
         {
             size *= 2;              // Guarantee that the size of the tree is a power of two
         }
-        sums.assign(2 * size, 0LL); // The size of the tree is the double of the array size (considering the power of 2)
+        mins.assign(2 * size, -1LL); // The size of the tree is the double of the array size (considering the power of 2)
     }
 
     // Recursive build
@@ -23,7 +23,7 @@ struct segtree
         {
             if (lx < (int)a.size()) // Check if the index is in the original array or is just to satisfy a power of 2
             {
-                sums[x] = a[lx];
+                mins[x] = a[lx];
             }
             return;
         }
@@ -32,7 +32,16 @@ struct segtree
         int m = (lx + rx) / 2;
         build(a, 2 * x + 1, lx, m); // Left side
         build(a, 2 * x + 2, m, rx); // Right side
-        sums[x] = sums[2 * x + 1] + sums[2 * x + 2]; // Calculates the parent value
+        int ml = mins[2 * x + 1] ;
+        int mr = mins[2 * x + 2]; // Calculates the parent value
+        if (ml < mr)
+        {
+            mins[x] = ml;
+        }
+        else
+        {
+            mins[x] = mr;
+        }
     }
 
     void build(std::vector<int> &a)
@@ -45,7 +54,7 @@ struct segtree
     {
         if(rx - lx == 1) // leaf
         {
-            sums[x] = u;
+            mins[x] = u;
             return;
         }
         int m = (lx + rx) / 2;
@@ -57,7 +66,16 @@ struct segtree
         {
             set(k, u, 2 * x + 2, m, rx);    // Go right
         }
-        sums[x] = sums[2 * x + 1] + sums[2 * x + 2];
+        int ml = mins[2 * x + 1] ;
+        int mr = mins[2 * x + 2]; // Calculates the parent value
+        if (ml < mr)
+        {
+            mins[x] = ml;
+        }
+        else
+        {
+            mins[x] = mr;
+        }
 
     }
 
@@ -67,65 +85,74 @@ struct segtree
     }
     
     // Recursive sum
-    long long sum(int l, int r, int x, int lx, int rx)
+    long long min(int l, int r, int x, int lx, int rx)
     {
         if (lx >= r || rx <= l) // Missed
         {
-            return 0;
+            return 9999999999999;
         }
         if (lx >= l && rx <= r)
         {
-            return sums[x];
+            return mins[x];
         }
         
         int m = (lx + rx) / 2;
-        long long s1 = sum(l, r, 2 * x + 1, lx, m);
-        long long s2 = sum(l, r, 2 * x + 2, m, rx);
-        return s1 + s2;
+        long long m1 = min(l, r, 2 * x + 1, lx, m);
+        long long m2 = min(l, r, 2 * x + 2, m, rx);
+        if (m1 < m2)
+        {
+            return m1;
+        }
+        else
+        {
+            return m2;
+
+        }
     }
     
-    long long sum(int l, int r)
+    long long min(int l, int r)
     {
-        return sum(l, r, 0, 0, size);
+        return min(l, r, 0, 0, size);
     }
     
 };
 
-
-
-
-int main (void)
+int main(void)
 {
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
 
-    int n, m;           // Size of the array and number of operations
-    std::cin >> n >> m;
 
-    segtree st;
+    int n, q;    
+    std::cin >> n >> q;
+    
     std::vector<int> a(n);
-    st.init(n);
-    for (int i =0; i < n; i++)
+
+    segtree sg;
+    sg.init(n);                 // Itialization of the segtree accord to the size
+    for (int i = 0; i < n; i++)
     {
         std::cin >> a[i];
     }
-    st.build(a);
+    sg.build(a);                // Building the segtree from the given array
 
-    while(n--)
+
+    while(q--)
     {
         int op;
         std::cin >> op;
         if(op == 1)
         {
-            int i, v;
-            std::cin >> i >> v;
-            st.set(i, v);
+            int k, u;
+            std::cin >> k >> u;
+            sg.set(k-1, u);
         }
         else
         {
             int l, r;
             std::cin >> l >> r;
-            std::cout << st.sum(l, r) << "\n";
+            std::cout << sg.min(l-1, r) << std::endl;
         }
     }
+
 }

@@ -91,41 +91,19 @@ struct segtree
     
 };
 
-
-
-
-int main (void)
+int main(void)
 {
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
 
-    int n, m;           // Size of the array and number of operations
-    std::cin >> n >> m;
 
-    segtree st;
-    std::vector<int> a(n);
-    st.init(n);
-    for (int i =0; i < n; i++)
+    int n, q;
+    
+    std::cin >> n >> q;
+    
+    while(q--)
     {
-        std::cin >> a[i];
-    }
-    st.build(a);
 
-    while(n--)
-    {
-        int op;
-        std::cin >> op;
-        if(op == 1)
-        {
-            int i, v;
-            std::cin >> i >> v;
-            st.set(i, v);
-        }
-        else
-        {
-            int l, r;
-            std::cin >> l >> r;
-            std::cout << st.sum(l, r) << "\n";
-        }
     }
+
 }
