@@ -17,29 +17,22 @@ int main(void)
         s[si]++;
     }
     
-    
-    int car_count = s[4];
+    int car_count = 0;
+    car_count = s[4];
     s[4] = 0;
 
-    int groups_3_1 = min(s[3], s[1]);
-    car_count += groups_3_1;
-    s[3] -= groups_3_1;
-    s[1] -= groups_3_1;
+    car_count += s[3];        
+    s[1] = max(0 , s[1] - s[3]);
 
-    int groups_2_2 = s[2] / 2;
-    car_count += groups_2_2;
-    s[2] -= groups_2_2 * 2;
+    car_count += s[2] / 2;
+    s[2] = s[2] % 2;        // It is only possible to remain 1 or 0 groups of 2
 
-    int groups_2_1_1 = min(s[2], s[1] / 2);
-    car_count += groups_2_1_1;
-    s[2] -= groups_2_1_1;
-    s[1] -= groups_2_1_1; 
-    
-    int groups_1_1_1_1 = s[1] / 4;
-    car_count += groups_1_1_1_1;
-    s[1] -= groups_1_1_1_1;
+    if(s[2] == 1)
+    {
+        car_count++;
+        s[1] = max(0, s[1] - 2);
+    }
 
-    car_count += s[1] + s[2] + s[3] + s[4];
-
-    cout << car_count << "\n";
+    car_count += (s[1] + 3) / 4;
+    cout << car_count << "\n";  
 }
