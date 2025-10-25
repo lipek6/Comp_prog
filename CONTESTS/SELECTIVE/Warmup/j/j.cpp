@@ -1,34 +1,90 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+// Subtract the total from the lower
 int main (void)
 {
+    // Typedef and using are the same, use using for types and define for other things
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    long long n, f, a, b, t; cin >> t;
+    double fixed = 12342.32142342342342352513523;
+    cout << setprecision(5) << fixed;
 
-    while(t--)
-    {
-        cin >> n >> f >> a >> b;
-        vector<long long> m(n + 1);
-        m[0] = 0;
-        for(int i = 1; i < n + 1; i++) cin >> m[i];
-        
-        for(int i = 0; i < n; i++)
-        {
-            long long wait_cons = (m[i + 1] - m[i]) * a;
-            long long turn_cons = b;
-     
-            if(wait_cons < turn_cons)
-                f -= wait_cons;
-            else 
-                f -= turn_cons;
-        }
+    //STL (containers):
+    vector<int> vec(n);
+    vec.
+    //iota: 0 1 2 3 4 5 6 7 8 9...;
+    //substr
+    //find
+    //stoi      string to int
+    //stoll     string to long long
+    //to_string
+    //string_int - '0' = int by ascii code
 
-        if(f > 0)
-            cout << "YES\n";
-        else
-            cout << "NO\n";
-    }
+    //map      = key value pair = binary_tree
+    //multimap = key value pair with repeated keys = binary_tree
+    //unordered_map = hash map
+
+    //set = conjunto carai
+    //multiset = conjunto com coisa repetida (só que usa binary tree, mais rápido que vetor pra achar)
+
+    //deque = fila com front e back = can use index
+    //pair
+    //auto [num, lang] = desempacota um pair
+
+    //sort and stable_sort
+    //sort star (sort *)
+
+    //unique
+
+    //binary_search
+    //lower_bound
+    //upper_bound
+    //upper - lower = how many of that element are on this vector
+    //accumulate
+    //reverse
+    //*min_element and *max_element
+    
+    
+    
+    // PREFIX SUM
+    
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+caioleitao

@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+// All the time you see a signal swap, count + 1
 int main (void)
 {
     ios_base::sync_with_stdio(false);

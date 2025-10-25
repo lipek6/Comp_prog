@@ -9,6 +9,7 @@ int main (void)
     int n, t; cin >> t;
     string path;
 
+    // Insert the double or half of the value
     while(t--)
     {
         cin >> n;
@@ -21,7 +22,7 @@ int main (void)
         {
             long long big  = max(a[i], a[i-1]);
             long long sml2 = min(a[i], a[i-1])*2;
-           
+            
             if(big < sml2)
             {
                 continue;
