@@ -11,35 +11,39 @@ int main (void)
     while(t--)
     {
         int n; cin >> n;
-        long long answ = 0;
+        int ai;
+        vector<int> a;
 
+        long long sum = 0; 
         for(int i = 0; i < n; i++)
         {
-            cin >> a[i];
-            answ += abs(a[i]);
+            cin >> ai;
+            if(ai != 0)
+            {
+                a.push_back(ai);
+                sum += abs(ai);
+            }
         }
-
-        long long ops  = 0;
-        int l = 0;
-        int r = n - 1;
 
         int i = 0;
-        int pos = 0;
-        int neg = 0;
+        int actions = 0; 
 
-        while(true)
+        while(i < a.size())
         {
-            if(a[i] >= 0)
+            while(a[i] < 0 && i < a.size())
             {
-                pos++;
-            }            
-            else neg++;
-
+                i++;
+            }
+            if(i > 0)
+            {
+                actions++;
+            }
+            while(a[i] > 0  && i < a.size())
+            {
+                i++;
+            }
         }
-
-
-
-
-        
+    
+        cout << sum << " " << actions << "\n";
     }
 }

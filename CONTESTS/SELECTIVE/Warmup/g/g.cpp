@@ -6,34 +6,30 @@ int main (void)
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
+    
     int n, t; cin >> t;
-    string path;
-
-    // Insert the double or half of the value
     while(t--)
     {
         cin >> n;
         vector<int>a(n);
         for(int i = 0; i < n; i++) cin >> a[i];
-
-        int init_size = a.size();
-        int add = 0;
-        for(int i = 1; i < a.size(); i++)
+        
+        int additions = 0;
+        for(int i = 0; i < a.size() - 1; i++)
         {
-            long long big  = max(a[i], a[i-1]);
-            long long sml2 = min(a[i], a[i-1])*2;
-            
-            if(big < sml2)
+            int maximal = max(a[i], a[i + 1]);
+            int minimal = min(a[i], a[i + 1]);
+
+            bool is_dense = maximal <= 2 * minimal;
+  
+            // Optimizing run time by not inserting things on the vector and just counting how many more numbers we will need on that position
+            while(!is_dense)
             {
-                continue;
-            }
-            else
-            {
-                a.insert(a.begin() + i, big/2 - 1);    
+                minimal = minimal * 2;
+                is_dense = maximal <= 2 * minimal;
+                additions++;
             }
         }
-        int end_size = a.size();
-
-        cout << init_size - end_size << "\n";
+        cout << additions << "\n";
     }
 }
