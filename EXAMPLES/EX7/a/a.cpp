@@ -63,17 +63,19 @@ int main (void)
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    while(true)
+    int n;
+    bool first_case = true;
+
+    while(cin >> n)
     {
+        if (!first_case) cout << "\n";
+        first_case = false;
+
         long long initial_cost = 0LL;
         long long new_cost     = 0LL;
 
         EL.clear();
-        int n; 
-        
-        if(line2 == "") cin >> n;
-        else n = stoi(line2);
-
+         
         disjoint_set ds;
         ds.init(n);
         int u, v, w;
@@ -112,11 +114,5 @@ int main (void)
             }
         }
         cout << initial_cost << "\n" << new_cost << "\n";
-
-        cin.ignore();
-        getline(cin, line);
-        getline(cin, line2);
-        if(line == "" && line2 == "") break;
-        else cout << "\n";
     }
 }
