@@ -76,8 +76,8 @@ int main (void)
 
         EL.clear();
          
-        disjoint_set ds;
-        ds.init(n);
+        disjoint_set dsu;
+        dsu.init(n);
         int u, v, w;
         for(int i = 0; i < n - 1; i++)
         {
@@ -107,10 +107,10 @@ int main (void)
             int u = get<1>(EL[i]);
             int v = get<2>(EL[i]);
 
-            if(ds.get(u) != ds.get(v))
+            if(dsu.get(u) != dsu.get(v))
             {
                 new_cost += w;
-                ds.union_find(u, v);
+                dsu.union_find(u, v);
             }
         }
         cout << initial_cost << "\n" << new_cost << "\n";
