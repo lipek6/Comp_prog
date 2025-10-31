@@ -1,6 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+// We must find a substring 'u' inside the string 't', for that, we will use the size of 'u' and everywhere we find a '?' in 't'
+
 int main (void)
 {
     ios_base::sync_with_stdio(false);
