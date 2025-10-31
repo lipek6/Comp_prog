@@ -2,50 +2,20 @@
 using namespace std;
 
 // We need to find the median of windows of size 'k', that menas that we will sort the k elements and get the middle element
-// That looks like something that would easily result into a TLE
-// To optimize this, maybe I can find the median of the windows as a I get the input
-// I can use the formula of the median, that is, the closest number to the average
+// OK, I will use multiseeeet
+
 int main (void)
 {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
     int n, k; cin >> n >> k;
-
     vector<int> x(n);
-    vector<long long> avg;
+    multiset<int> window;    // Value and index
     
-    long long window_sum = 0;
-
-    for(int i = 0; i < n; i++)
+    for(int i = 0; i < n; i++) 
     {
         cin >> x[i];
-        window_sum += x[i];
-
-        if(i >= k - 1)
-        {
-            avg.push_back(window_sum / k);
-            window_sum -= x[i + 1 - k];
-        }
     }
-
-    long long window_median = LLONG_MAX;
-    long long closest_diff = LLONG_MAX;
-    long long diff;
-
-    int i = 0;
-    while(i < avg.size())
-    {
-        closest_diff = LLONG_MAX;
-        for(int j = i; j < k + i; j++)
-        {
-            diff = abs(avg[i] - x[j]); 
-            if(abs(closest_diff - avg[i]) > diff) closest_diff = x[j];
-            if(diff == 0) break;
-        }
-        cout << closest_diff << " ";
-        i++;
-    }
-    cout << "\n";
-
-}   // I think that this might be about O(n + n*k)?
+    
+}
