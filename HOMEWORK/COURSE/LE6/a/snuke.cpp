@@ -1,46 +1,64 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+int h, w;
+int dr[] = {-1, +1, 0, 0};    // UP, DOWN, LEFT, RIGHT
+int dc[] = {0, 0, -1, +1};    // UP, DOWN, LEFT, RIGHT
+vector<vector<vector<bool>>> visited;
+vector<string> matrix;
+string snuke = "snuke";
+
+void dfs(int i, int j, int s)   // s is the last character that we came from, because a path to the end maybe will need to visit something that we already visited from another possible path
+{
+    
+    visited[i][j][s] = 1;
+    int new_s = (s + 1) % 5;
+
+    for(int k = 0; k < 4; k++)
+    {
+        int new_i = i+dr[k];
+        int new_j = j+dc[k];
+
+        if((new_i < 0 || new_j < 0) || (new_i >= h || new_j >= w))
+            continue;
+        if(visited[new_i][new_j][new_s] == 1)
+            continue;
+        if(snuke[new_s] != matrix[new_i][new_j])
+            continue;
+
+        dfs(new_i, new_j, new_s);
+    }
+
+}
+
+
+
 int main(void)
 {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
-    
-    int dir_row[] = {1, 1, 0, -1, -1, -1, 0, 1};    // S, SE, E, NE, N, NW, W, SW
-    int dir_col[] = {0, 1, 1, 1, 0, -1, -1, -1};    // S, SE, E, NE, N, NW, W, SW
-    
-    int h, w; cin >> h >> w;
-    string snuke = "snuke";
 
-    // Implicit graph
-    vector<string> matrix(h);
+    cin >> h >> w;
+    
+    visited.resize(h, vector<vector<bool>>(w, vector<bool>(5)));
+    matrix.resize(h);
     for(int i = 0; i < h; i++) cin >> matrix[i];
 
-    // Checking the ajdacent directions of the current node
-    int s = 0;
-    bool possible = true;
-    int i = 0;
-    int j = 0;
-    while(i != h-1 || j != w-1)
+    if(matrix[0][0] != 's')
     {
-        for(int dir = 0; dir < 8; dir++)
+        cout << "No" << "\n";
+        return 0;
+    }
+    
+    // We just need to run a dfs on the nodes that are ajdacent to 0,0, the dfs will work out the rest
+    dfs(0,0,0);
+    for(int i = 0; i < 5; i++)
+    {
+        if(visited[h-1][w-1][i] == 1)
         {
-            if(i + dir_row[dir] < 0 || i + dir_row[dir] >= h) continue;
-            if(i + dir_col[dir] < 0 || i + dir_col[dir] >= w) continue;
-            if(matrix[i + dir_row[dir]][j + dir_col[dir]] == snuke[s % 5])
-            {
-                s++;
-                i += dir_row[dir];
-                j += dir_col[dir];
-            }
-            else if(dir == 7) possible = false;
-        }
-
-        if (!possible)
-        {
-            cout << "NO" << "\n";
-            return 0;
+            cout << "Yes" << "\n";
+            return 0;    
         }
     }
-    cout << "YES" << "\n";
+    cout<< "No" << "\n";
 }

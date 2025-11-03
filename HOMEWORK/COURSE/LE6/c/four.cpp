@@ -1,61 +1,79 @@
 #include<bits/stdc++.h>
 using namespace std;
-using ll = long long;
 
-int main (void)
+enum { UNVISITED = -1, VISITED = -2, EXPLORED = -3 };
+
+vector<vector<int>> AL;
+vector<int> dfs_num;
+vector<int> dfs_parent;
+vector<int> cycle;
+
+void cycleCheck (int u)
 {
-    // The (fucking) idea here is to make dp hold the optimal cost to get to the total capacity of passangers:
-    // So: dp[0] = 0; 
-    //     dp[1] = best price to alocate 1 guy  at the cars;
-    //     dp[2] = best price to alocate 2 guys at the cars;
-    //     dp[3] = best price to alocate 3 guys at the cars;
-    //     dp[4] = best price to alocate 4 guys at the cars...
+    dfs_num[u] = EXPLORED;
 
-
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    
-    int x, n; cin >> x >> n;           // Number of marathonists and available ride options
-
-    vector<ll> p(n);       // Passengers
-    vector<ll> v(n);       // Values
-    
-    ll total_capacity = 0;
-    for(int i = 0; i < n; i++)
-    {
-        cin >> p[i] >> v[i];        // Number of passengers and the charge for the trip
-        total_capacity += p[i];
-    }
-
-    if (x > total_capacity)
-    {
-        cout << "-1" << "\n";
-        return 0;        
-    }
-    
-    vector<ll> dp(total_capacity + 1, LLONG_MAX);    // Minimal cost to get to a total capacity of idx
-    dp[0] = 0;
-
-    for(int i = 0; i < n; i++)
-    {
-        int capacity = p[i];
-        int cost     = v[i];
-        for(int k = total_capacity; k >= capacity; k--)
+    for(int i = 0; i < AL[u].size(); i++)
+    {    
+        int v = AL[u][i];
+        
+        if(dfs_num[v] == UNVISITED)
         {
-            if (dp[k - capacity] != LLONG_MAX)
+            dfs_parent[v] = u;
+            cycleCheck(v);
+        }
+        else if(dfs_num[v] == EXPLORED)
+        {
+            if(v != dfs_parent[u]) // Cycle found
             {
-                dp[k] = min(dp[k], dp[k - capacity] + cost);
+                cycle.push_back(v);
+                
+                int j = u;
+                while(j != v)
+                {
+                    cycle.push_back(j);
+                    j = dfs_parent[j];
+                }
+                cycle.push_back(v);
+
+                cout << cycle.size() << "\n";
+                for(int i = 0; i < cycle.size(); i++)
+                {
+                    cout << cycle[i] << " ";
+                }
+                cout << "\n";
+                exit(0);
             }
         }
     }
+    dfs_num[u] = VISITED;
+}
 
-    // cout << dp[x] << "\n"; We cannot simply print the cost to transport x guys
-    // There is the chance that trasporting more than x guys is cheaper
 
-    ll min_cost = LLONG_MAX;
-    for (int k = x; k <= total_capacity; k++)
+// We need to create a cycle between the given cities using the given roads
+int main (void)
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    int n, m; cin >> n >> m;
+
+    dfs_num.assign(n+1, UNVISITED);
+    dfs_parent.assign(n+1, -1);
+    AL.resize(n+1);
+    
+    int a, b;
+    for(int i = 0; i < m; i++)
     {
-        min_cost = min(min_cost, dp[k]);
+        cin >> a >> b;
+        AL[a].push_back(b);
+        AL[b].push_back(a);
     }
-    cout << min_cost << "\n";
+
+    for(int u = 1; u <= n; u++)
+    {
+        if(dfs_num[u] == UNVISITED)
+            cycleCheck(u);
+
+    }
+    cout << "IMPOSSIBLE" << "\n";
 }
