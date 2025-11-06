@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+// "list of the temperature ranges".... >>>>>ranges<<<<< Hmmmm, sweepepepepeppeyyy
+int main (void)
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, q; cin >> n >> q;
+    
+    multiset<pair<int,int>> events; // Like in all problems like this one
+
+    for(int i = 0; i < n; i++)
+    {
+        // The range is inclusive, so from li to ri the bear likes it, maybe I will need to use ri + 1?
+        int li, ri; cin >> li >> ri;
+
+        events.insert({li,  1});
+        events.insert({ri + 1, -1});
+    }
+
+    // Maybe using a lower_bound with t?
+    for(int i = 0; i < q; i++)
+    {
+        int t; cin >> t;
+
+        auto lower_temp = events.lower_bound({t, 1});
+
+
+
+
+    }
+
+
+}

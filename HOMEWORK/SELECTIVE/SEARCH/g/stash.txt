@@ -8,25 +8,28 @@ int main (void)
 
     int n; cin >> n;
 
+    map<int, int> occurrences;
     vector<pair<int,int>> events;
     for(int i = 0; i < n; i++)
     {
         int in, out;
         cin >> in >> out;
+        occurrences[in]++;
+        occurrences[out]++;
         events.push_back({in, 1});
-        events.push_back({out+1, -1}); // We can't start to watch another thing at moment 'out' exactly
+        events.push_back({out, -1});
     }
     sort(events.begin(), events.end());
     
 
-    int front = 0;
-    int back  = 0;
+    vector<int> presum(events.size() + 1);
+    presum[0] = 0;
 
     for(int i = 0; i < events.size(); i++)
     {
-        back = front; 
-        front = back + events[i].second;
-        if(front >= 3)
+        presum[i+1] = presum[i] + events[i].second;
+        
+        if(presum[i+1] >= 2 && events[i].first == events[i+1].first)
         {
             cout << "NO" << "\n";
             return 0;
