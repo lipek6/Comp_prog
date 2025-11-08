@@ -32,23 +32,17 @@ int main (void)
         presum[i+1] = presum[i] + events[i].second;
     }
 
-
-        for(int i = 1; i <= n; i++)
+    for(int i = 0; i < n; i++)
+    {
+        int toprint = 0;
+        for(int j = 0; j < presum.size(); j++)
         {
-            if (presum[i] < i)
+            if (presum[j] < i)
             {
-                for(int j = i; j <= n; j++)
-                {
-                    if(presum[j] > i) cout << events[i].first - events[j].first << " ";
-                }
-            }
-            else
-            {
-                cout << "0" << " ";
+                toprint++;
             }
         }
-
+        cout << toprint << " ";
+    }
     cout << "\n";
-
-
 }
