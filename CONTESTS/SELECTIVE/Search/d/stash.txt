@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main (void)
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    int tc; cin >> tc;
+    while(tc--)
+    {
+        int n, k; cin >> n >> k;
+        multiset<int> h;
+        int init_h;
+        int max_tower = 0;
+        for(int i = 0; i < n; i++)
+        {
+            int hi; cin >> hi;
+            h.insert(hi);
+            if(i == k-1) init_h = hi;
+            max_tower = max(max_tower, hi);
+        }
+
+        int lvl = 1;
+        bool possbile = true;
+    
+
+
+
+
+
+
+
+
+
+        while(init_h != max_tower)
+        {
+            auto next_tower = h.upper_bound(init_h);
+            int time_tp = *next_tower - init_h;
+
+            if(*next_tower < lvl + time_tp) 
+            {
+                cout << "NO" << "\n";
+                possbile = false;
+                break; 
+            }
+
+            init_h = *next_tower;
+
+            lvl += time_tp;
+        }
+
+        if(possbile) cout << "YES" << "\n";
+    }
+}
