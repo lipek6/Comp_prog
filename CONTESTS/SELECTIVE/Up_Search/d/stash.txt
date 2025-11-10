@@ -42,7 +42,6 @@ int main (void)
             else
             {
                current_height = *next_tower;
-               water_level += height_difference;
             }
 
             if(*next_tower == top_tower)
