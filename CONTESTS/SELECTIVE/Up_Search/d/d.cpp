@@ -12,48 +12,40 @@ int main (void)
     {
         int n, k; cin >> n >> k;
 
-        multiset<int> h;
+        vector<int> h(n);
+        int top_height = 0;
+        int current_height = 0;
+        int water_heigth = 1;
+        int teleport_time = 0;
+        int next_height_idx = 0;
+        bool possible = true;
+
+        for(int i = 0; i < n; i++) cin >> h[i];
+
+        current_height = h[k-1];
+
+        sort(h.begin(), h.end());
+
+        top_height = *(h.end() - 1);
+
         
-        int top_tower = 0;
-        int current_height;
-
-        for(int i = 0; i < n; i++)
+        while(current_height != top_height)
         {
-            int hi; cin >> hi;
-            top_tower = max(top_tower, hi);
-            if(i == k - 1) current_height = hi;
-            h.insert(hi);
-        }
+            next_height_idx = upper_bound(h.begin(), h.end(), current_height) - h.begin();      // Get the index of the next tower
 
-        int water_level = 1;
-        bool nope = false;
+            teleport_time = h[next_height_idx] - current_height; 
 
-        while(true)
-        {
-            auto next_tower = h.upper_bound(current_height);
-            int height_difference =  *next_tower - current_height;
+            water_heigth += teleport_time;
 
-            if(water_level + height_difference > current_height + 1)
+            if(water_heigth > current_height + 1)
             {
-                cout << "NO" << "\n";
-                nope = true;
+                possible = false;
                 break;
             }
-            else
-            {
-               current_height = *next_tower;
-               water_level += height_difference;
-            }
-
-            if(*next_tower == top_tower)
-            {
-                break;
-            }
+            
+            current_height = h[next_height_idx];
         }
-
-        if(!nope)
-        {
-            cout << "YES" << "\n";
-        }
+        if(possible) cout << "YES" << "\n";
+        else cout << "NO" << "\n";
     }
 }

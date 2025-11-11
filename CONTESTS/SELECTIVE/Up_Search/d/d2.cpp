@@ -1,0 +1,56 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main (void)
+{
+    ios_base::sync_with_stdio(false);   
+    cin.tie(nullptr);
+
+    int tc; cin >> tc;
+
+    while(tc--)
+    {
+        int n, k; cin >> n >> k;
+
+        multiset<int> h;
+        
+        int top_tower = 0;
+        int current_height;
+
+        for(int i = 0; i < n; i++)
+        {
+            int hi; cin >> hi;
+            top_tower = max(top_tower, hi);
+            if(i == k - 1) current_height = hi;
+            h.insert(hi);
+        }
+
+        int water_level = 1;
+        bool nope = false;
+
+        while(current_height != top_tower)
+        {
+            
+            auto next_tower = h.upper_bound(current_height);
+            
+            int height_difference =  *next_tower - current_height;
+            
+            water_level += height_difference;
+            
+            if(water_level > current_height + 1)
+            {
+                cout << "NO" << "\n";
+                nope = true;
+                break;
+            }
+            
+            current_height = *next_tower;
+
+        }
+
+        if(!nope)
+        {
+            cout << "YES" << "\n";
+        }
+    }
+}
