@@ -1,0 +1,80 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+enum {BLUE = -1, PINK = -2, NONE = -3};
+
+// Count how many nodes have different colors and no connections
+int main (void)
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    int n, m; cin >> n >> m;
+    
+    vector<vector<int>> AL(n+1);
+    vector<int> color(n+1, NONE);
+
+    for(int i = 0; i < m; i++)
+    {
+        int v1, v2; 
+        cin >> v1 >> v2;
+
+        AL[v1].push_back(v2);
+        AL[v2].push_back(v1);
+    }
+
+    vector<int> blues;
+    vector<int> pinks;
+
+    queue<int> q;
+    for(int source_node = 1; source_node <= n; source_node++)
+    {
+        if(color[source_node] != NONE) continue;
+        
+        q.push(source_node);
+
+        while(!q.empty())
+        {
+            int current_node = q.front(); q.pop();
+
+            if(color[current_node] == NONE)
+            {
+                color[current_node] = PINK;
+                pinks.push_back(current_node);
+            }
+
+            for(int adjacent_node : AL[current_node])
+            {
+                if(color[current_node] == color[adjacent_node])
+                {
+                    cout << "0" << "\n";
+                    return 0;
+                }
+                
+                if(color[adjacent_node] != NONE) continue;
+                
+
+                if(color[current_node] == PINK)
+                {
+                    color[adjacent_node] = BLUE;
+                    blues.push_back(adjacent_node);
+                }
+                
+                else if(color[current_node] == BLUE)
+                {
+                    color[adjacent_node] = PINK;
+                    pinks.push_back(adjacent_node);
+                }
+
+                q.push(adjacent_node);
+            }
+        }
+    }
+
+    for(int i = 1; i <= n; i++)
+    {
+        if(color[i] == PINK) cout << i << " = PINK" << "\n";  
+        if(color[i] == BLUE) cout << i << " = BLUE" << "\n";
+        if(color[i] == NONE) cout << i << " = NONE" << "\n";    
+    }
+}
