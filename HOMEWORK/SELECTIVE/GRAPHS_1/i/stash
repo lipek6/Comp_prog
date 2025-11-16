@@ -1,0 +1,87 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+enum {INSIDE_ROAD = 1, OUTSIDE_ROAD = 2};
+
+vector<vector<int>> AL;
+
+int main (void)
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m; cin >> n >> m;
+    AL.resize(n+1);
+
+    for(int i = 1; i < n; i++)
+    {
+        AL[i].push_back(i+1);
+        AL[i+1].push_back(i);
+    }
+    AL[n].push_back(1);
+    AL[1].push_back(n);
+    
+    string result = "";
+
+    vector<pair<int, int>> extra_inside_connections;
+    vector<pair<int, int>> extra_outside_connections;
+
+    for(int i = 0; i < m; i++)
+    {
+        bool currently_possible = false;
+        int a, b; cin >> a >> b;
+        
+        if(i == 0)
+        {
+            result.append("i");
+            extra_inside_connections.push_back({a, b});
+            continue;
+        }
+
+        for(pair<int,int> connection : extra_inside_connections)
+        {
+            if(a >= connection.first && a <= connection.second && b >= connection.first && b <= connection.second)
+            {
+                result.append("i");
+                extra_inside_connections.push_back({a, b});
+                currently_possible = true;
+                break;
+            }
+        }
+        
+        if(currently_possible) continue;
+
+        if(extra_outside_connections.empty())
+        {
+            result.append("o");
+            extra_outside_connections.push_back({a, b});   
+            continue;
+        }
+
+        for(pair<int,int> connection : extra_outside_connections)
+        {
+            if((a >= connection.second || a <= connection.first) &&  (b >= connection.second || b <= connection.first))
+            {
+                result.append("o");
+                extra_outside_connections.push_back({a, b});
+                currently_possible = true;
+                break;
+            }
+
+            if((a <= connection.second && a >= connection.first) &&  (b <= connection.second || b >= connection.first))
+            {
+                result.append("o");
+                extra_outside_connections.push_back({a, b});
+                currently_possible = true;
+                break;
+            }
+        }
+
+        if(!currently_possible)
+        {
+            cout << "Impossible\n";
+            return 0;
+        }
+    }
+    cout << result << "\n";
+}

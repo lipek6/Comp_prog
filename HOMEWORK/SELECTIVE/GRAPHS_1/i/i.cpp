@@ -1,48 +1,55 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-enum {NO_ROAD = 0, CIRCLE_ROAD = 1, NEW_ROAD = 2};
+vector<pair<int,int>> EL;
+string result = "";
+vector<int> color;
+int n, m; 
 
-// Yeah, that probably requires a matrix and not an adjacency list
+enum {INSIDE_ROAD = 1, OUTSIDE_ROAD = 2, UNDEFINED_ROAD = 0};
+
 int main (void)
 {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int n, m; cin >> n >> m;
-    vector<vector<int>> matrix(n+1, vector<int>(n+1, NO_ROAD));
-
-    for(int i = 1; i <= n; i++)
-    {
-        for(int j = 1; j <= n; j++)
-        {
-            if(j == i+1)
-            matrix[i][j] = CIRCLE_ROAD;
-            else if(i == j+1)
-            matrix[i][j] = CIRCLE_ROAD;
-        }
-    }
-    matrix[n][1] = CIRCLE_ROAD;
-    matrix[1][n] = CIRCLE_ROAD;
-
-    string result = "";
+    cin >> n >> m;
 
     for(int i = 0; i < m; i++)
     {
         int a, b;
         cin >> a >> b;
-
-        if(matrix[a][b] == CIRCLE_ROAD)
+        
+        if(a > b)
         {
-            result.append("i");
+            int t = a; a = b; b = t;
         }
-        else if(matrix[a][b] == NO_ROAD)
+
+        EL.push_back({a, b});
+    }
+
+    vector<vector<int>> problems(m);
+    color.assign(m, UNDEFINED_ROAD); // color of each pair of nodes
+        
+    for(int i = 0; i < EL.size(); i++)
+    {
+        int road_start = EL[i].first;
+        int road_end   = EL[i].second;
+
+        for(int j = i+1; j < EL.size(); j++)
         {
-            result.append("o");
+            int other_start = EL[j].first;
+            int other_end   = EL[j].second;
+
+            bool other_start_inside = (other_start > road_start && other_start < road_end); // Other road starts inside the range of the road
+            bool other_end_inside   = (other_end   > road_start && other_end   < road_end);
+
+            if(other_start_inside != other_end_inside)
+            {
+                problems[]
+            }
         }
     }
 
     cout << result << "\n";
-
-
 }
