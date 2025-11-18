@@ -10,10 +10,11 @@ int n, m;
 vector<vector<char>> matrix;
 vector<vector<int>>  timed_path;
 
-vector<vector<int>> escape(int cur_row, int cur_col, int time, vector<vector<int>> path)
-{
-    path.assign(n, vector<int>(m, UNVISITED));
+int exit_i = UNVISITED;
+int exit_j = UNVISITED;
 
+void escape(int cur_row, int cur_col, int time)
+{
     timed_path[cur_row][cur_col] = time;
 
     for(int dir = 0; dir < 4; dir++)
@@ -23,29 +24,24 @@ vector<vector<int>> escape(int cur_row, int cur_col, int time, vector<vector<int
 
         if(new_row >= n || new_row < 0) continue;
         if(new_col >= m || new_col < 0) continue;
-
         if(timed_path[new_row][new_col] != UNVISITED) continue;
-
         if(matrix[new_row][new_col] !=  '.') continue;
         
+
         if(matrix[new_row][new_col] ==  '.' && (new_row == n-1 || new_col == m-1))
         {
-            cout << "FOUND\n";
+            timed_path[new_row][new_col] = time + 1;
             
-            path[new_row][new_col] = time + 1;
+            exit_i = new_row;
+            exit_j = new_col;
 
-            return path;
-        } 
-        
-        path[new_row][new_col] = time + 1;
-        
-        escape(new_row, new_col, time + 1, path);
+            return;
+        }
 
-        path[new_row][new_col] = UNVISITED;
+
+        escape(new_row, new_col, time + 1);
     }
-    return path;
 }
-
 
 
 
@@ -76,7 +72,15 @@ int main (void)
         }
     }
 
-    vector<vector<int>> path;
-    path = escape(A_i, A_j, 0, path);
-    cout << "done\n";
+    escape(A_i, A_j, 0);
+    
+    if(exit_i == -1 || exit_j == -1)
+    {
+        cout << "NO\n";
+        return 0;
+    }
+    
+    //reconstruct_path(exit_i, exit_j);
+    
+    cout << "done\nexit_i = " << exit_i << "\nexit_j = " << exit_j << "\n";
 }
