@@ -15,33 +15,74 @@ vector<vector<int>> A_path;
 int exit_i = UNVISITED;
 int exit_j = UNVISITED;
 
-void escape(int cur_row, int cur_col, int time)
+void ReleaseMonsters(vector<pair<int,int>>& monster)
 {
-    timed_path[cur_row][cur_col] = time;
+    queue<pair<int,int>> q; 
 
-    for(int dir = 0; dir < 4; dir++)
+    for(int i = 0; i < monster.size(); i++)
     {
-        int new_row = dir_row[dir] + cur_row;
-        int new_col = dir_col[dir] + cur_col;
-
-        if(new_row >= n || new_row < 0) continue;
-        if(new_col >= m || new_col < 0) continue;
-        if(timed_path[new_row][new_col] != UNVISITED) continue;
-        if(matrix[new_row][new_col] !=  '.') continue;
+        q.push({monster[i].first, monster[i].second});
+        Mdist[monster[i].first][monster[i].second] = 0;
+    }
+    
+    while(!q.empty())
+    {    
+        int cur_row = q.front().first;
+        int cur_col = q.front().second;
+        q.pop();
         
-
-        if(matrix[new_row][new_col] ==  '.' && (new_row == n-1 || new_col == m-1))
+        for(int dir = 0; dir < 4; dir++)
         {
-            timed_path[new_row][new_col] = time + 1;
+            int new_row = cur_row + dir_row[dir];
+            int new_col = cur_col + dir_col[dir];
             
-            exit_i = new_row;
-            exit_j = new_col;
-
-            return;
+            if(new_row >= n || new_row < 0) continue;
+            if(new_col >= m || new_col < 0) continue;
+            if(matrix[new_row][new_col] == '#') continue;
+            if(Mdist[new_row][new_col] != UNVISITED) continue;
+            
+            Mdist[new_row][new_col] = Mdist[cur_row][cur_col] + 1;
+            
+            q.push({new_row, new_col});
         }
+    }
+}
 
+void TryToEscape(pair<int,int>& dude)
+{
+    queue<pair<int,int>> q;
+    q.push(dude);
+    Adist[dude.first][dude.second] = 0;
+    
+    while(!q.empty())
+    {    
+        int cur_row = q.front().first;
+        int cur_col = q.front().second;
+        q.pop();
+        
+        for(int dir = 0; dir < 4; dir++)
+        {
+            int new_row = cur_row + dir_row[dir];
+            int new_col = cur_col + dir_col[dir];
+            
+            if(new_row >= n || new_row < 0) continue;
+            if(new_col >= m || new_col < 0) continue;
+            if(matrix[new_row][new_col] != '.') continue;
+            if(Adist[new_row][new_col] != UNVISITED) continue;
+            
+            Adist[new_row][new_col] = Adist[cur_row][cur_col] + 1;
 
-        escape(new_row, new_col, time + 1);
+            if(Adist[cur_row][cur_col] + 1 >= Mdist[new_row][new_col]) continue;
+
+            if(new_row == n-1 || new_col == m-1)
+            {
+                better_point.first  = new_row;
+                better_point.second = new_col;
+                return;
+            }
+            
+            q.push({new_row, new_col});
+        }
     }
 }
 
