@@ -2,7 +2,7 @@
 #define UNVISITED 1e18
 using namespace std;
 
-
+// Can be used with multisources, but not with negative weigths
 int main (void)
 {
     ios_base::sync_with_stdio(false);

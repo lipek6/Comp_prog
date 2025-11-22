@@ -36,9 +36,7 @@ struct disjoint_set
 
         if(s[a] > s[b])           // Make sure that we will unite the smaller whit the larger
         {
-            int temp = a;
-            a = b;
-            b = temp;
+            swap(a, b);
         }
         p[a] = b;
         s[b] += s[a];
