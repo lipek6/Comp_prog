@@ -1,3 +1,4 @@
+// Redo with lower bound and upper bound instead of prefix sum
 #include<bits/stdc++.h>
 #define UNVISITED 1e9
 using namespace std;
@@ -38,7 +39,7 @@ int main (void)
         dist[exit.first][exit.second] = 0;
     }
 
-    vector<int> distances(1000, 0);
+    vector<int> distances(n * n + 1, 0);
     while(!q.empty())
     {
         auto& [cur_row, cur_col] = q.front();
@@ -63,25 +64,22 @@ int main (void)
     }
 
     distances[0] = 0;
-    vector<long long> xbreads(1000, 0);
+    vector<long long> xbreads(n*n + 2, 0);
 
-    for(int i = 1; i <= n; i++)
-    {
-        xbreads[i] = distances[i-1] + xbreads[i-1];
-    }
-        
+    for(int i = 1; i <= n*n; i++) xbreads[i] = distances[i-1] + xbreads[i-1];
+
+
     while(qc--)
     {
         int bread; cin >> bread;
         int valid;
 
-        if(bread >= n)
-            valid = xbreads[n];
+        if(bread >= n*n + 1)
+            valid = sps;
         else
             valid = xbreads[bread];
 
         double result = (double)valid/(double)sps;
-        cout << setprecision(8) << result << "\n"; 
-        
+        cout << fixed << setprecision(8) << result << "\n";    
     }
 }

@@ -19,28 +19,18 @@ int main (void)
             letter = c[i];
     }
 
-    long long num = stoi(number_str);
-    long long car = letter - 'a';
+    //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa use stoll instead of stoi
+    unsigned long long int num = stoll(number_str) * (unsigned long long int)26;
+    unsigned long long int car = letter - 'a';
 
-    long long pos = num + car;
+    unsigned long long int pos = num + car;
 
-    long long num_s =  0;
-    long long car_s = 'e' - 'a';
+    unsigned long long int pos_s = 4;
 
-    long long pos_s = num_s + car_s;
-
-    long long i = 1;
-    long long to_sum = 3;
-    
-    long long l = 0;
-    long long r = 1e18;
-
-    while(l <= r)
+    unsigned long long int i = 1;
+    unsigned long long int to_sum = 3;
+    while(true)
     {
-        long long m = l + (r-l)/2;
-
-        if(m / (3*))
-    
         if(pos_s > pos)
         {
             cout << -1 << "\n";

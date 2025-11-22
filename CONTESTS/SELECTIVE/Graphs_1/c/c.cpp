@@ -21,13 +21,19 @@ int main (void)
     
         sort(domino.begin(), domino.end());
 
-        
+        auto l = lower_bound(domino.begin(), domino.end(), first_domino) - domino.begin();
+        auto r = lower_bound(domino.begin(), domino.end(), last_domino)  - domino.begin();
 
+        int amount = 1;
 
+        int current   = domino[l];
+        int posterior = l+1;
 
+        while(current * 2 > domino[posterior])
+        {
+            current = domino[posterior++];
+        }
 
-
+        cout << amount << "\n";
     }
-
-
 }

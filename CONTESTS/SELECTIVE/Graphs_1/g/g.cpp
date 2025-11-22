@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+// Argumento da troca
 int main (void)
 {
     ios_base::sync_with_stdio(false);
@@ -21,11 +22,5 @@ int main (void)
         {
             AL.push_back({p[i], t[i] + p[i-1]})
         }
-
-
-
-
-
     }
-
 }
