@@ -40,6 +40,7 @@ int main (void)
         
         for(int i = 2; i < n; i++)
         {
+            
             int choose0 = degrees[0].first + degrees[i].first - 1;
             int choose1 = degrees[1].first + degrees[i].first - 1;
             if (choose0 <= max_components) break;
