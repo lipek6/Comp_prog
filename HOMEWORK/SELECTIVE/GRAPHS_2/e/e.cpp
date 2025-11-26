@@ -2,10 +2,11 @@
 #define INF 1e9
 using namespace std;
 
-int total_dist = 0;
 int intersections, streets, friends;
+vector<vector<pair<int,int>>> AL;
+vector<int> important_nodes;
 
-int djakastra(int source, auto& AL, auto& friend_house, bool to_destiny);
+void djkastra(int source, vector<int>& dist, vector<int>& parent);
 
 // Home is at intersection number one and camping site is at intersection number N
 int main (void)
@@ -15,15 +16,18 @@ int main (void)
 
     int tc; cin >> tc;
     int case_num = 0;
+
     while(tc--)
     {
         case_num++;
 
         cin >> intersections >> streets >> friends;
         
-        total_dist = 0;
-        vector<vector<pair<int,int>>> AL(intersections + 1);
-        vector<int> friend_house(friends);
+        AL.clear();
+        important_nodes.clear();
+
+        AL.resize(intersections + 1);
+        important_nodes.resize(friends + 2);
                 
         for(int i = 0; i < streets; i++)
         {
@@ -34,29 +38,47 @@ int main (void)
             AL[pt2].push_back({len, pt1});
         }
         
-        for(int i = 0; i < friends; i++) cin >> friend_house[i];
+        important_nodes[0] = 1;                                         // Source
+        for(int i = 1; i <= friends; i++) cin >> important_nodes[i];    // Friends
+        important_nodes[friends + 1] = intersections;                   // Destiny
         
-        int next_friend = djakastra(1, AL, friend_house, false);
-        int last_friend = next_friend;
 
-        while(next_friend != -1)
+        // Build matrix of all distances of the important nodes
+        vector<vector<int>> dist_matrix  (intersections + 1, vector<int>(intersections + 1, INF));
+        vector<vector<int>> parent_matrix(intersections + 1, vector<int>(intersections + 1, INF));
+
+        for(int i = 0; i < important_nodes.size(); i++)
         {
-            last_friend = next_friend;
-            next_friend = djakastra(next_friend, AL, friend_house, false);
+            int node = important_nodes[i];
+            djkastra(node, dist_matrix[node], parent_matrix[node]);
         }
-
-        djakastra(last_friend, AL, friend_house, true);
-        cout << "Case " << case_num << ": " << total_dist << "\n";
+        
+        // Try all permutations of visiting order of the important nodes
+        int minimal_distance = INF;
+        do
+        {
+            int distance = 0;
+            for(int j = 1; j < important_nodes.size(); j++)
+            {
+                int curr_node = important_nodes[j-1]; 
+                int next_node = important_nodes[j];
+                
+                distance += dist_matrix[curr_node][next_node];
+            }
+            minimal_distance = min(minimal_distance, distance);
+        }
+        while(next_permutation(important_nodes.begin() + 1, important_nodes.end() - 1));
+    
+        cout << "Case " << case_num << ": " << minimal_distance << "\n";
     }
 }
 
-int djakastra(int source, auto& AL, auto& friend_house, bool to_destiny)
+void djkastra(int source, vector<int>& dist, vector<int>& parent)
 {
-    vector<int> parent(intersections + 1, INF);
-    vector<int> dist(intersections + 1, INF);
     priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> heap;
 
     heap.push({0, source});
+    parent[source] = source;
     dist[source] = 0;
 
     while(!heap.empty())
@@ -77,31 +99,5 @@ int djakastra(int source, auto& AL, auto& friend_house, bool to_destiny)
             heap.push({new_distance, ajdacent_node});
         }
     }
-
-    if(to_destiny)
-    {
-        total_dist += dist[intersections];
-        return 0;
-    }
-
-    int i = 0;
-    int idx = 0;
-    int next_friend = 0;
-    for(; i < friend_house.size(); i++)
-    {
-        if(friend_house[i] != -1)
-        {
-            if(dist[friend_house[i]] < dist[next_friend])
-            {
-                next_friend = friend_house[i];
-                idx = i;
-            }
-        }
-    }
-
-    if(next_friend == 0) return -1;
-
-    total_dist += dist[next_friend];
-    friend_house[idx] = -1;
-    return next_friend;
+    return;
 }
