@@ -54,6 +54,9 @@ int main (void)
         }
         
         // Try all permutations of visiting order of the important nodes
+
+        sort(important_nodes.begin() + 1, important_nodes.end() - 1);   // Just remember to sort when using next_permutation
+        
         int minimal_distance = INF;
         do
         {

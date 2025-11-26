@@ -2,6 +2,7 @@
 using namespace std;
 
 vector<vector<pair<int,int>>> AL;
+vector<tuple<int,int,int>> EL;
 vector<int> representative;
 vector<int> set_size;
 
@@ -42,7 +43,7 @@ int main (void)
 
     int islands, bridges; cin >> islands >>  bridges;
     
-    representative.resize(islands + 1); iota(representative.begin(), representative.end());
+    representative.resize(islands + 1); iota(representative.begin(), representative.end(), 0);
     set_size.assign(islands + 1, 1);
     AL.resize(islands + 1);
 
@@ -52,18 +53,18 @@ int main (void)
 
         AL[island1].push_back({i, island2});
         AL[island2].push_back({i, island1});
+        EL.push_back({i, island1, island2});
 
         join(island1, island2);
     }
 
-    for(int i = 1; i <= bridges; i++)
+    long long inconvenience = 0;
+    for(auto& [i, island1, island2]: EL)
     {
-
-
-        
+        for(int j = 0; j < representative.size(); j++)
+        {
+            if (j >= representative[j]) inconvenience++;
+        }
+        cout << inconvenience << "\n";
     }
-
-
-
-
 }
