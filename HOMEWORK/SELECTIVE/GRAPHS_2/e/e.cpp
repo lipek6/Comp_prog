@@ -5,7 +5,7 @@ using namespace std;
 int total_dist = 0;
 int intersections, streets, friends;
 
-int djakastra(int source, auto& AL, auto& friend_house);
+int djakastra(int source, auto& AL, auto& friend_house, bool to_destiny);
 
 // Home is at intersection number one and camping site is at intersection number N
 int main (void)
@@ -36,18 +36,21 @@ int main (void)
         
         for(int i = 0; i < friends; i++) cin >> friend_house[i];
         
-        int next_friend = djakastra(1, AL, friend_house);
-        
+        int next_friend = djakastra(1, AL, friend_house, false);
+        int last_friend = next_friend;
+
         while(next_friend != -1)
         {
-            next_friend = djakastra(next_friend, AL, friend_house);
+            last_friend = next_friend;
+            next_friend = djakastra(next_friend, AL, friend_house, false);
         }
-        
+
+        djakastra(last_friend, AL, friend_house, true);
         cout << "Case " << case_num << ": " << total_dist << "\n";
     }
 }
 
-int djakastra(int source, auto& AL, auto& friend_house)
+int djakastra(int source, auto& AL, auto& friend_house, bool to_destiny)
 {
     vector<int> parent(intersections + 1, INF);
     vector<int> dist(intersections + 1, INF);
@@ -73,6 +76,12 @@ int djakastra(int source, auto& AL, auto& friend_house)
             parent[ajdacent_node] = current_node;
             heap.push({new_distance, ajdacent_node});
         }
+    }
+
+    if(to_destiny)
+    {
+        total_dist += dist[intersections];
+        return 0;
     }
 
     int i = 0;
