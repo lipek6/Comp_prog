@@ -13,40 +13,75 @@ int main (void)
     for(int i = 1; i <= tunnels; i++)
     {
         int a_room, b_room, tunnel_score; cin >> a_room >> b_room >> tunnel_score;
-        AL[a_room].push_back({tunnel_score, b_room});
+        AL[a_room].push_back({b_room, tunnel_score});
     }
     
-    long long score = 0;
+    vector<long long> dscore(rooms + 1, -INF);
+    dscore[1] = 0;
 
-    vector<long long> dist_score(rooms + 1, -INF);
-    vector<bool> visited(rooms + 1, false);
-    priority_queue<pair<int,int>> max_heap;
-    max_heap.push({score, 1});
-    long long max_score = -INF;
-
-    while(!max_heap.empty())
+    for(int sweep = 0; sweep < rooms - 1; sweep++)
     {
-        auto [curr_score, curr_room] = max_heap.top();
-        max_heap.pop();
-
-        if(dist_score[curr_room] > curr_score) continue;         // Trash on the heap
-        if(visited[curr_room]) continue;
-
-        for(auto [adj_score, adj_room] : AL[curr_room])
+        bool modified = false;
+        for(int root_node = 1; root_node <= rooms; root_node++)
         {
-            long long new_score = adj_score + curr_score;
+            if(dscore[root_node] == -INF) continue;
 
-            if(new_score < dist_score[adj_room]) continue;
+            long long accumulated_score = dscore[root_node];
+            for(auto& [adj_node, adj_score] : AL[root_node])
+            {
+                long long old_score = dscore[adj_node];
+                long long new_score = accumulated_score + adj_score;
 
-            dist_score[adj_room] = new_score;
-            max_score = max(max_score, new_score);
-            max_heap.push({adj_score, adj_room});
+                if(new_score > old_score)
+                {
+                    dscore[adj_node] = new_score;
+                    modified = true;
+                }
+            }
         }
-        visited[curr_room] = true;
+        if(!modified) break;
     }
 
-    if(dist_score[rooms] == -INF || max_score > dist_score[rooms])
-        dist_score[rooms] = -1;
+    vector<bool> affected_by_cycle(rooms+1, false);
+    queue <int>  to_check_affection;
+    for(int root_node = 1; root_node <= rooms; root_node++)
+    {
+        if(dscore[root_node] == -INF) continue;
+
+        long long accumulated_score = dscore[root_node];
+        for(auto& [adj_node, adj_score] : AL[root_node])
+        {
+            long long new_score = accumulated_score + adj_score;
+            long long old_score = dscore[adj_node];
+
+            if(new_score > old_score)
+            {
+                affected_by_cycle[adj_node] = true;
+                to_check_affection.push(adj_node);
+                break;
+            }
+        }
+    }
+
+    while(!to_check_affection.empty())
+    {
+        int affected_node = to_check_affection.front();
+        to_check_affection.pop();
+
+        dscore[affected_node] = INF;
         
-    cout << dist_score[rooms] << "\n";
+        for(auto& [maybe_affected_node, w] : AL[affected_node])
+        {
+            if(!affected_by_cycle[maybe_affected_node])
+            {
+                affected_by_cycle[maybe_affected_node] = true;
+                to_check_affection.push(maybe_affected_node);
+            }
+        }
+    }
+
+
+    if(dscore[rooms] == INF || affected_by_cycle[rooms]) dscore[rooms] = -1;
+    
+    cout << dscore[rooms] << "\n";
 }

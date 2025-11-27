@@ -1,0 +1,24 @@
+a) (0,25) No processo pai
+
+Na chamada no processo pai, fork() retorna o pid do filho criado.
+
+b) (0,25) No processo filho.
+
+Na chamada no processo flho, fork() retorna 0.
+
+c) (0,25)Após isso, compile e execute o programa e print o resultado exibido no console.
+Observe o uso das funções getpid() e getppid(). Qual a diferença entre elas?
+
+getpid()  Retorna o número de identificação do próprio processo que está executando o comando
+getppid() Retorna o número de identificação do criador (pai) do processo atual.
+
+Basicamente, o código quando chega em "pid_t pid = fork()", o processo filho é criado apartir do processo pai, sendo uma cópia exata do pai.
+
+Nesse momento, temos dois processos ao mesmo tempo, no processo pai, a variável pid será o PID do processo filho (retornada por fork() e que
+é diferente de 0), e será executado "printf("[PARENT]: PID: %d - PPID: %d\n", getpid(), getppid());", onde getpid() pegará o PID do processo
+atual (nesse caso o PID do processo pai) e getppid() pegará o pai do processo pai (que é o shell/terminal).
+
+Já no processo filho, a variável pid será 0, que é o valor retornado pela chamada anterior à fork() (quando fork() é chamada, ela retorna tanto
+para o processo pai quanto para o filho, dando ao pai o PID do filho, e ao filho, 0). Isso fará com que seja executado "printf("[CHILD]: PID: %d
+- PPID: %d\n", getpid(), getppid())", onde getpid() retornará o PID do processo atual (nesse caso o PID do processo filho) e getppid() retornará
+o PID do processo pai do processo atual (nesse caso, o PID do processo pai citado anteriormente);
