@@ -89,6 +89,10 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "stdio.h": "c",
+        "unistd.h": "c",
+        "wait.h": "c",
+        "errno.h": "c"
     }
 }
