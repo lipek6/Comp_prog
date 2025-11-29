@@ -1,6 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+// The god little optimization of djkstra is a hero (VISITED VECTOR)
+
 int main (void)
 {
     ios_base::sync_with_stdio(false);
