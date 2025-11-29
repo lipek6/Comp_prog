@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+// Use a monotonic stack
 int main (void)
 {
     ios_base::sync_with_stdio(false);

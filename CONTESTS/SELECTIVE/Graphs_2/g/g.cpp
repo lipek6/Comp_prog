@@ -1,11 +1,20 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int test_radius(int m, vector<int>& dist)
+int test_radius(int m, vector<int>& x)
 {
-    auto up = upper_bound(dist.begin(), dist.end(), m);
-    auto lw = lower_bound(dist.begin(), dist.end(), m);
-    return up - lw;
+    int cows = 1;
+    int pos  = x[0] + m;
+    while(true)
+    {
+        
+
+
+    }
+
+
+
+
 }
 
 // Dp on the answer???
@@ -24,11 +33,6 @@ int main (void)
 
     for(int i = 0; i < n; i++) cin >> x[i];
     sort(x.begin(), x.end());
-    for(int i = 0; i < n-1; i++)
-    {
-        dist.push_back(x[i+1] - x[i]);
-    }
-    sort(dist.begin(), dist.end(), greater());
 
 
     int l = 0;
@@ -39,23 +43,23 @@ int main (void)
     {
         int m = l + ((r-l)/2);
 
-        int curr_radius = test_radius(m, dist);
+        int curr_cows = test_radius(m, x);
 
-        if(k > curr_radius)
+        if(k > curr_cows)
         {
             l = m + 1;
         }
-        else if(k < curr_radius)
+        else if(k < curr_cows)
         {
             r = m - 1;
-            best_radius = min(best_radius, curr_radius);
+            best_radius = min(best_radius, m);
         }
         else
         {
-            best_radius = min(best_radius, curr_radius);
+            best_radius = min(best_radius, m);
             break;
         }
     }
-    cout << best_radius << "\n";
 
+    cout << best_radius << "\n";
 }

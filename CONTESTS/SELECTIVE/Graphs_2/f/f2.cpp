@@ -14,21 +14,37 @@ int main (void)
     box['i'] = 0; box['j'] = 0; box['k'] = 0; box['l'] = 0; box['m'] = 0; box['n'] = 0; box['o'] = 0; box['p'] = 0; box['q'] = 0;
     box['r'] = 0; box['s'] = 0; box['t'] = 0; box['u'] = 0; box['v'] = 0; box['w'] = 0; box['x'] = 0; box['y'] = 0; box['z'] = 0;
     
-    string letters;
     for(int i = 0; i < s_size; i++)
     {
-        if(s[i] == '(')
+        if(s[i] == ')')
         {
-            letters += s[i];
+            int to_close = 1;
+            for(int j = i - 1; j >= 0; j--)
+            {
+                if(s[j] == ')')
+                {
+                    to_close++;
+                    continue;
+                }
+                if(s[j] == '(')
+                {
+                    to_close--;
+                    if(to_close == 0)
+                        break;
+                    else
+                        continue;
+                }
+                box[s[j]] = false;
+            }
+            if(to_close > 0)
+            {
+                cout << "No\n"; return 0;
+            }
         }
 
-        else if(s[i] == ')')
-        {            
-            for(int j = letters.size() - 1; j >= 0; j--)
-            {
-                box[letters[j]] = false;
-            }
-            letters.clear();
+        else if(s[i] == '(')
+        {
+            continue;
         }
 
         else
@@ -39,11 +55,9 @@ int main (void)
             }
             else
             {
-                letters += s[i];
                 box[s[i]] = true;
             }
         }
     }
-    
     cout << "Yes\n";
 }

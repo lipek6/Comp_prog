@@ -26,8 +26,8 @@ int main (void)
     for(int i = k; i < n; i++)
     {
         window = window xor arr[i-k]; // Remove element 
-        window = window xor arr[i]; // Remove element 
-        result = result xor window;
+        window = window xor arr[i];   // Add element 
+        result = result xor window;   // Xor the window
     }
 
     cout << result << "\n";
