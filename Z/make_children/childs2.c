@@ -6,9 +6,9 @@
 int main(void)
 {
     int N, T; scanf("%i %i", &N, &T);
-    printf("CREATING %d CHILDREN AND PUTTING THEN TO SLEEP FOR %d SECONDS\n\n", N, T);
+    printf("CREATING %d CHILDREN, SLEEPING FOR %d SECONDS AND EXECUTING 'ps -aux' FOR EACH CHILDREN\n\n", N, T);
 
-    for(int i = 1; i <= N; i++)                                                  // Make daddy have N children
+    for(int i = 1; i <= N; i++)                                                  
     {
         pid_t pid = fork();                                                     // Fork a child process.
 
@@ -21,10 +21,13 @@ int main(void)
         else if(pid == 0)                                                       // Child process.
         {
             printf("[CHILD %d]: PID: %d - PPID: %d\n", i, getpid(), getppid());       
-            printf("[CHILD %d]: It's time to sleep for %d seconds\n", i, T);
+            printf("[CHILD %d]: Sleeping for %d seconds and then executing 'ps -aux'\n", i, T);
             sleep(T);                                                           
-            printf("[CHILD %d]: Terminating myself now (PID: %d)\n", i, getpid());
-            return 0;
+            
+            execlp("ps", "ps", "aux", (char *)NULL);                            // Thanks stack overflow
+            
+            perror("I failed to execute execlp, cry about it\n");
+            return 666;
         }
 
         else
@@ -39,4 +42,5 @@ int main(void)
             }
         }
     }
+    return 0;
 }
