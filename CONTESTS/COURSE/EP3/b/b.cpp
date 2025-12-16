@@ -91,24 +91,17 @@ int main(void)
 
     disjoint_set dsu;
     int n, m, x, y;       // Chemicals and pairs and to put (x, y)
-    std::vector<std::pair<int, int>> pairs;
-    int danger = 1;
     std::cin >> n >> m;
-
+    
     dsu.init(n);
     while(m--)
     {
         std::cin >> x >> y;
-        pairs.push_back({x, y});
         dsu.union_find(x, y);
     }
+    
+    long long danger = 1LL;
+    danger = danger << (n - dsu.count());
 
-    for (int i = 0; i < dsu.size(dsu.biggest()) - 1; i++)
-    {   
-        if(dsu.get(pairs[i].first) == dsu.get(pairs[i].second))
-        {
-            danger *= 2; 
-        }
-    }
-    std::cout << danger << std::endl;
+    std::cout << danger << "\n";
 }
