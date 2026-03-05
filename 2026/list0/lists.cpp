@@ -1,19 +1,19 @@
 #include <iostream>
 
-int CountElements(const std::string& list);
+long long CountElements(const std::string& list);
 
 
 
 int main(void)
 {
-    int biggestListSize = 0;
+    long long biggestListSize = -1;
 
     std::string biggestList;
     std::string inList;
 
     while(std::getline(std::cin, inList))
     {
-        int currentListSize = CountElements(inList);
+        long long currentListSize = CountElements(inList);
         
         if(currentListSize > biggestListSize)
         {
@@ -28,11 +28,14 @@ int main(void)
 
 
 
-int CountElements(const std::string& list)
+long long CountElements(const std::string& list)
 {
-    int listSize = 0;
+    if(list.size() <= 2)
+        return 0;
     
-    for(int i = 0; i < list.size(); i++)
+    long long listSize = 1;
+    
+    for(size_t i = 0; i < list.size(); i++)
     {
         if(list[i] == ',')
             listSize++;
